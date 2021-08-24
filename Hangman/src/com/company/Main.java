@@ -6,9 +6,9 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-	    String[] guessWords = new String[]{"whale", "shark", "dolphin", "alpaca", "seal", "penguin", "panda"};
+	String[] guessWords = new String[]{"whale", "shark", "dolphin", "alpaca", "seal", "penguin", "panda"};
         Scanner getInput = new Scanner(System.in);
-	    boolean gameStart = true;
+	boolean gameStart = true;
         ArrayList<Character> correctLetters = new ArrayList<>();
         ArrayList<Character> incorrectLetters = new ArrayList<>();
         int totalGuesses = 0;
