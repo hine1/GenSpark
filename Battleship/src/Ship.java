@@ -5,6 +5,7 @@ public class Ship {
     private char direction;
     private int length;
     private char mark;
+    private boolean destroy = false;
 
     public Point getStartPoint() {
         return startPoint;
@@ -36,5 +37,13 @@ public class Ship {
 
     public void setMark(char mark) {
         this.mark = mark;
+    }
+
+    public boolean isDestroy() {
+        return destroy;
+    }
+
+    public void setDestroy() {
+        this.destroy = !destroy;
     }
 }

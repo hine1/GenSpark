@@ -1,12 +1,12 @@
-import java.util.ArrayList;
+import java.awt.*;
 
 public class Board {
-    private static char[][] grid = new char[10][10];
-    private ArrayList<Ship> ships = new ArrayList<>();
+    private char[][] grid = new char[10][10];
+    private char[][] opponentGridView = new char[10][10];
     private String playerName;
 
-    public static char[][] getGrid() {
-        return grid;
+    Board(String playerName){
+        this.playerName = playerName;
     }
 
     public String getPlayerName() {
@@ -17,53 +17,87 @@ public class Board {
         this.playerName = playerName;
     }
 
-    Board(String playerName){
-        this.playerName = playerName;
-    }
-    public void addShip(Ship ship) {
-        this.ships.add(ship);
-        markShip(ship);
+
+    // Get attacked at coordinates
+    public void getAttackedAt(Point point){
+        if (grid[point.x][point.y] == '\u0000') {
+            opponentGridView[point.x][point.y] = 'm';
+            showOpponentGridView();
+            System.out.println("You missed!\n");
+        }else {
+            opponentGridView[point.x][point.y] = 'x';
+            showOpponentGridView();
+            System.out.println("Attacked successfully at (" + point.x + "," + point.y + ")\n");
+        }
+
     }
 
-    public void destroyShip(Ship ship){
-        this.ships.remove(ship);
+    // Declare lost if there are 17 successful attacks (total length of all ships)
+    public boolean gotAllShipsDestroyed(){
+        int destroys = 0;
+        // Count number of 'x' marks
+        String str = showOpponentGridView().replaceAll("[^x]", "");
+        destroys = str.length();
+        if (destroys == 17)
+            return true;
+        else
+            return false;
     }
 
+    // Mark ship placement on the board game if the placement is valid
     public boolean markShip(Ship ship){
         int x = ship.getStartPoint().x;
         int y = ship.getStartPoint().y;
 
+        // if the start coordinates is already taken, return false
         if (grid[x][y] != '\u0000'){
             System.out.println("ERROR. The coordinates are already taken.");
             return false;
         }
 
-        if (checkShipPlacement(ship, false)){
+        try{
+            // if the direction input is not correct (v or h)
+            if (ship.getDirection() != 'v' && (ship.getDirection() != 'h'))
+                throw new Exception("The direction must be either 'v' or 'h'");
+            // Vertical
             if (ship.getDirection() == 'v'){
-                for (int i=0; i<ship.getLength(); i++){
-                    grid[x-i][y] = ship.getMark();
-                }
-            }else{
-                for (int i=0; i<ship.getLength(); i++){
-                    grid[x][y-i] = ship.getMark();
+                    // If the ship is able to fit in a forward direction
+                    if (x<=ship.getLength() && checkShipPlacement(ship, true)) {
+                        for (int i=0; i<ship.getLength(); i++){
+                            grid[x+i][y] = ship.getMark();
+                        }
+                        return true;
+                        // If the ship can't fit in the forward direction
+                    }else if (x>ship.getLength() && checkShipPlacement(ship, false)) {
+                        for (int i = 0; i < ship.getLength(); i++) {
+                            grid[x - i][y] = ship.getMark();
+                        }
+                        return true;
+                    }
+            // Horizontal
+            }else if (ship.getDirection() == 'h'){
+                // If the ship is able to fit in a forward direction
+                if (y<=ship.getLength() && checkShipPlacement(ship, true)) {
+                    for (int i=0; i<ship.getLength(); i++){
+                        grid[x][y+i] = ship.getMark();
+                    }
+                    return true;
+                    // If the ship can't fit in the forward direction
+                }else if (y>ship.getLength() && checkShipPlacement(ship, false)) {
+                    for (int i=0; i<ship.getLength(); i++){
+                        grid[x][y-i] = ship.getMark();
+                    }
+                    return true;
                 }
             }
-            return true;
-        }else if (checkShipPlacement(ship, true)){
-            if (ship.getDirection() == 'v'){
-                for (int i=0; i<ship.getLength(); i++){
-                    grid[x+i][y] = ship.getMark();
-                }
-            }else{
-                for (int i=0; i<ship.getLength(); i++){
-                    grid[x][y+i] = ship.getMark();
-                }
-            }
-            return true;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
         }
         return false;
     }
 
+    // Check whether the ship placement is valid or not
     public boolean checkShipPlacement(Ship ship, boolean isForward){
         int x = ship.getStartPoint().x;
         int y = ship.getStartPoint().y;
@@ -95,6 +129,31 @@ public class Board {
         return true;
     }
 
+    // This is what the opponent see when launching an attack
+    public String showOpponentGridView(){
+        String str = "";
+        for (int i=0; i<10; i++){
+            for (int j=0; j<10; j++){
+                if (i==0){
+                    if (j==0)
+                        str += " ";
+                    else
+                        str += j;
+                }else if (j==0) {
+                    str += i;
+                }else{
+                    if(opponentGridView[i][j] == '\u0000')
+                        str += '~';
+                    else
+                        str += opponentGridView[i][j];
+                }
+                str += " ";
+            }
+            str += "\n";
+        }
+        return str;
+    }
+
     @Override
     public String toString(){
         String str = "";
@@ -113,6 +172,7 @@ public class Board {
                     else
                         str += grid[i][j];
                 }
+                str += " ";
             }
             str += "\n";
         }
