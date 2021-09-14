@@ -22,17 +22,28 @@ public class Main {
                 "A large dragon jumps out in front of you! He spreads his wings widely and...\n" +
                 "Gives you the fuzziest hug!\n";
 	    System.out.println(premise);
-        Scanner getDecision = new Scanner(System.in);
+
         int decision;
         int randomResult = (int)Math.round(Math.random());
         // Waits till a correct input is made (1 or 2)
         while (true) {
-            decision = getDecision.nextInt();
-            if (decision != 1 && decision != 2)
-                System.out.println(premise);
-            else
+            decision = getDecision();
+            if (decision == 1 || decision == 2)
                 break;
+            else
+                System.out.println(premise);
         }
+
         System.out.println(scenarios[randomResult]);
+    }
+
+    public static int getDecision(){
+        Scanner scanner = new Scanner(System.in);
+        try {
+            return scanner.nextInt();
+        }catch (Exception e){
+            System.out.println("The answer has to be either 1 or 2");
+        }
+        return 0;
     }
 }

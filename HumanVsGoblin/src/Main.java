@@ -21,18 +21,16 @@ public class Main {
                 System.out.println("\nNEW POTION DROP!\n");
             }
             System.out.println(land);
+
             // Wait till human makes a move
+            while (!moveHuman()){}
 
-            while (!moveHuman()){
-
-            }
-
-            if (!checkCollision()) {
+            if (!hasCollision()) {
                 goblin.move(human);
             }
         }
     }
-    public static boolean checkCollision(){
+    public static boolean hasCollision(){
         int distanceX = goblin.x_location - human.x_location;
         int distanceY = goblin.y_location - human.y_location;
         if (Math.abs(distanceX) == 1 && Math.abs(distanceY) == 0) {

@@ -73,7 +73,7 @@ public class Main {
     // Place a ship on the game board if the placement is not already taken
     public static void placeShip(Board board, Ship ship){
         Scanner scanner = new Scanner(System.in);
-        Point point = new Point();
+        Point point;
 
         while (true){
             point = getCoordinates();
@@ -98,7 +98,6 @@ public class Main {
 
     // Get placements for 5 ships per each player
     public static void getShipPlacements(Board board){
-        Scanner scanner = new Scanner(System.in);
         System.out.println(board.toString());
         System.out.println(board.getPlayerName() + ", please enter the coordinates for your ships.");
 

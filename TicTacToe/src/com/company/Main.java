@@ -61,10 +61,10 @@ public class Main {
         }
     }
     public static boolean checkWhetherToRestartGame(){
-        System.out.println("Do you want to play again? (yes or no)");
         Scanner getInput = new Scanner(System.in);
         String decision;
         while (true){
+            System.out.println("Do you want to play again? (yes or no)");
             decision = getInput.next();
             if (decision.equals("yes"))
                 return true;
@@ -112,12 +112,14 @@ public class Main {
                 return move;
         }
     }
+
     public static int getPlayerMove(HashMap<Integer, Character> gameBoard){
         System.out.println("What is your next move? (1-9)");
-        Scanner getInput = new Scanner(System.in);
-        int playerMove = getInput.nextInt();
+        int playerMove;
+
         while (true){
-            if (playerMove>9)
+            playerMove = getNumber();
+            if (playerMove>9 || playerMove<1)
                 System.out.println("Please enter a move (1-9)");
             else if (gameBoard.containsKey(playerMove))
                 System.out.println(playerMove + " is taken. Please enter a move (1-9)");
@@ -125,15 +127,28 @@ public class Main {
                 return playerMove;
         }
     }
+
+    public static int getNumber(){
+        Scanner scanner = new Scanner(System.in);
+        try {
+            return scanner.nextInt();
+        }catch (Exception e){
+            return 0;
+        }
+    }
+
     public static char getPlayerMark(){
         System.out.println("Welcome to Tic-Tac-Toe!\nDo you want to be X or O?");
         Scanner getInput = new Scanner(System.in);
-        char playerMark = getInput.next().charAt(0);
+        char playerMark;
         while (true){
+            playerMark = getInput.next().charAt(0);
             if (playerMark == 'X' || playerMark == 'x')
                 return 'X';
             else if (playerMark == 'O' || playerMark == 'o')
                 return 'O';
+            else
+                System.out.println("Do you want to be X or O?");
         }
     }
     public static void displayGameBoard(HashMap<Integer, Character> gameBoard){

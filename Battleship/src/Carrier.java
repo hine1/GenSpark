@@ -1,4 +1,3 @@
-import java.awt.*;
 
 public class Carrier extends Ship{
     private static int length = 5;

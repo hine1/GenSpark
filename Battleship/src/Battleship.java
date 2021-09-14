@@ -9,11 +9,5 @@ public class Battleship extends Ship{
         this.setMark(mark);
     }
 
-//    Battleship(Point startPoint, char direction){
-//        this.setStartPoint(startPoint);
-//        this.setDirection(direction);
-//        this.setLength(length);
-//        this.setMark(mark);
-//    }
 
 }

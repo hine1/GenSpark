@@ -13,6 +13,7 @@ public class Main {
         ArrayList<Character> incorrectLetters = new ArrayList<>();
         int totalGuesses = 0;
         String guessWord="";
+
 	    while (gameStart){
 	        // When a new game starts, generate a new guess word and clear previous correct and incorrect guesses
             if (totalGuesses==0) {
